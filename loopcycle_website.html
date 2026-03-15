@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loop Cycle — Closing the Loop on Plastic Waste</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+:root {
+  --teal-deep: #00695C;
+  --teal: #00897B;
+  --teal-mid: #26A69A;
+  --teal-light: #26C6DA;
+  --teal-pale: #E0F7F4;
+  --ocean-dark: #0A1F1F;
+  --ocean-mid: #0D2B2B;
+  --ocean-surface: #0F3535;
+  --sand: #F5F0E8;
+  --text-dark: #1A2B2B;
+  --text-mid: #3D5A58;
+  --text-light: #80AAAA;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--ocean-dark);
+  color: #E8F5F3;
+  overflow-x: hidden;
+}
+
+/* ── PARTICLES ── */
+.particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(10,31,31,0.95) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.nav-logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #E8F5F3;
+  letter-spacing: 1px;
+}
+
+.nav-logo-text span { color: var(--teal-light); }
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: #A8C8C4;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--teal-light); }
+
+.nav-cta {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1.5px solid var(--teal);
+  color: var(--teal-light) !important;
+  border-radius: 30px;
+  transition: all 0.3s !important;
+}
+
+.nav-cta:hover {
+  background: var(--teal) !important;
+  color: white !important;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  padding: 120px 40px 80px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #00897B22 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, #26C6DA12 0%, transparent 50%),
+    linear-gradient(180deg, #0A1F1F 0%, #0A1F1F 100%);
+  overflow: hidden;
+}
+
+.hero-wave {
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 120px;
+}
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #E8F5F3;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--teal-light);
+}
+
+.hero-title strong {
+  font-weight: 700;
+  display: block;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: #88B4B0;
+  font-weight: 300;
+  max-width: 520px;
+  line-height: 1.7;
+  margin: 0 auto 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.9s;
+}
+
+.btn-primary {
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-mid));
+  color: white;
+  text-decoration: none;
+  border-radius: 40px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 8px 32px rgba(0,137,123,0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,137,123,0.5);
+}
+
+.btn-secondary {
+  padding: 14px 36px;
+  background: transparent;
+  color: #A8C8C4;
+  text-decoration: none;
+  border-radius: 40px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1.5px solid #A8C8C444;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--teal-light);
+  color: var(--teal-light);
+}
+
+/* ── COUNTER STRIP ── */
+.counter-strip {
+  background: #071414;
+  padding: 60px 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.counter-item {
+  text-align: center;
+  padding: 32px 20px;
+  border-right: 1px solid #ffffff08;
+}
+
+.counter-item:last-child { border-right: none; }
+
+.counter-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--teal-light);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.counter-label {
+  font-size: 0.72rem;
+  color: #607D8B;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* ── SECTION BASE ── */
+section {
+  position: relative;
+  z-index: 2;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 40px;
+}
+
+/* ── PROBLEM SECTION ── */
+.problem {
+  background: linear-gradient(180deg, #071414 0%, #0A1F1F 100%);
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.section-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: #E8F5F3;
+  margin-bottom: 24px;
+}
+
+.section-title em { font-style: italic; color: var(--teal-light); }
+.section-title strong { font-weight: 700; }
+
+.section-body {
+  font-size: 0.95rem;
+  color: #88B4B0;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.section-body p { margin-bottom: 16px; }
+
+.stat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stat-card {
+  background: #0D2B2B;
+  border: 1px solid #1E3D3D;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.stat-card:hover {
+  border-color: var(--teal);
+  transform: translateX(4px);
+}
+
+.stat-card-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--teal-light);
+  line-height: 1;
+  min-width: 90px;
+}
+
+.stat-card-text {
+  font-size: 0.82rem;
+  color: #A8C8C4;
+  line-height: 1.5;
+}
+
+.stat-card-text strong { color: #E8F5F3; display: block; margin-bottom: 2px; }
+
+/* ── MISSION ── */
+.mission {
+  background: linear-gradient(180deg, #0A1F1F 0%, #0C2424 100%);
+}
+
+.mission-centre {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 80px;
+}
+
+.mission-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-style: italic;
+  font-weight: 300;
+  color: #C8E6E4;
+  line-height: 1.5;
+  margin: 32px 0;
+  padding: 0 40px;
+  border-left: 3px solid var(--teal);
+  text-align: left;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.mission-card {
+  background: linear-gradient(135deg, #0D2B2B, #0A2020);
+  border: 1px solid #1E3D3D;
+  border-radius: 16px;
+  padding: 32px;
+  transition: border-color 0.3s;
+}
+
+.mission-card:hover { border-color: var(--teal); }
+
+.mission-card-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 12px;
+}
+
+.mission-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #E8F5F3;
+  margin-bottom: 12px;
+}
+
+.mission-card-body {
+  font-size: 0.88rem;
+  color: #88B4B0;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── PILLARS ── */
+.pillars {
+  background: #071414;
+}
+
+.pillars-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pillar-card {
+  background: linear-gradient(160deg, #0D2B2B 0%, #071414 100%);
+  border: 1px solid #1E3D3D;
+  border-radius: 20px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.pillar-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--teal);
+  box-shadow: 0 20px 60px rgba(0,137,123,0.2);
+}
+
+.pillar-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #ffffff05;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.pillar-icon {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.pillar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #E8F5F3;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.pillar-subtitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 16px;
+}
+
+.pillar-body {
+  font-size: 0.85rem;
+  color: #88B4B0;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.pillar-bullets {
+  list-style: none;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pillar-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: #A8C8C4;
+}
+
+.pillar-bullets li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── ROADMAP ── */
+.roadmap {
+  background: linear-gradient(180deg, #071414, #0A1F1F);
+}
+
+.roadmap-header { text-align: center; margin-bottom: 64px; }
+
+.roadmap-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.roadmap-timeline::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 16.5%;
+  right: 16.5%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--teal-light));
+}
+
+.roadmap-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.roadmap-node {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s;
+}
+
+.roadmap-node:hover { transform: scale(1.1); }
+
+.rn-1 { background: #002F2F; border: 2px solid var(--teal); box-shadow: 0 0 20px rgba(0,137,123,0.4); }
+.rn-2 { background: #003535; border: 2px solid var(--teal-mid); box-shadow: 0 0 20px rgba(38,166,154,0.4); }
+.rn-3 { background: #003A3A; border: 2px solid var(--teal-light); box-shadow: 0 0 24px rgba(38,198,218,0.5); }
+
+.roadmap-node-sub { font-size: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase; color: #80AAAA; }
+.roadmap-node-num { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; }
+.rn-1 .roadmap-node-num { color: var(--teal); }
+.rn-2 .roadmap-node-num { color: var(--teal-mid); }
+.rn-3 .roadmap-node-num { color: var(--teal-light); }
+
+.roadmap-card {
+  width: 100%;
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.rc-1 { background: #00897B14; border: 1px solid #00897B44; }
+.rc-2 { background: #26A69A14; border: 1px solid #26A69A44; }
+.rc-3 { background: #26C6DA14; border: 1px solid #26C6DA55; }
+
+.roadmap-theme {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.rc-1 .roadmap-theme { color: var(--teal); border-bottom: 1px solid #00897B33; }
+.rc-2 .roadmap-theme { color: var(--teal-mid); border-bottom: 1px solid #26A69A33; }
+.rc-3 .roadmap-theme { color: var(--teal-light); border-bottom: 1px solid #26C6DA33; }
+
+.roadmap-milestones { display: flex; flex-direction: column; gap: 8px; }
+
+.rm {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #A8C8C4;
+  line-height: 1.45;
+}
+
+.rm::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.rc-1 .rm::before { background: var(--teal); }
+.rc-2 .rm::before { background: var(--teal-mid); }
+.rc-3 .rm::before { background: var(--teal-light); }
+
+.rm strong { color: #E8F5F3; font-weight: 600; }
+
+/* ── SDG ── */
+.sdg-section {
+  background: #0C2424;
+}
+
+.sdg-header { text-align: center; margin-bottom: 52px; }
+
+.sdg-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sdg-badge {
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+
+.sdg-badge:hover { transform: translateY(-2px); }
+
+.sdg-badge .sdg-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* SDG colours */
+.sdg-4  { background: #C51A2D22; border: 1px solid #C51A2D66; color: #E88A91; }
+.sdg-6  { background: #26BDE222; border: 1px solid #26BDE266; color: #7DD8EE; }
+.sdg-9  { background: #FD642522; border: 1px solid #FD642566; color: #FFA07A; }
+.sdg-11 { background: #FD9D2422; border: 1px solid #FD9D2466; color: #FFCC80; }
+.sdg-12 { background: #BF8B2E22; border: 1px solid #BF8B2E66; color: #E6C97A; }
+.sdg-13 { background: #3F7E4422; border: 1px solid #3F7E4466; color: #81C784; }
+.sdg-14 { background: #0A97D922; border: 1px solid #0A97D966; color: #64B5F6; }
+.sdg-15 { background: #56C02B22; border: 1px solid #56C02B66; color: #A5D6A7; }
+.sdg-17 { background: #19486A22; border: 1px solid #19486A66; color: #90CAF9; }
+
+/* ── TEAM ── */
+.team {
+  background: linear-gradient(180deg, #0C2424, #071414);
+}
+
+.team-header { text-align: center; margin-bottom: 64px; }
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.team-card {
+  background: #0D2B2B;
+  border: 1px solid #1E3D3D;
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.team-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-4px);
+}
+
+.team-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+}
+
+.team-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #E8F5F3;
+  margin-bottom: 4px;
+}
+
+.team-role {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.team-desc {
+  font-size: 0.75rem;
+  color: #607D8B;
+  line-height: 1.5;
+}
+
+/* ── CTA ── */
+.cta-section {
+  background: linear-gradient(135deg, #071414 0%, #002424 50%, #071414 100%);
+  padding: 120px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00897B18, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: #E8F5F3;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.cta-title em { font-style: italic; color: var(--teal-light); }
+
+.cta-sub {
+  font-size: 1rem;
+  color: #88B4B0;
+  margin-bottom: 52px;
+  font-weight: 300;
+  position: relative;
+}
+
+.cta-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.cta-card {
+  background: #0D2B2B;
+  border: 1px solid #1E3D3D;
+  border-radius: 16px;
+  padding: 32px 28px;
+  width: 240px;
+  text-align: center;
+  transition: border-color 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.cta-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-6px);
+}
+
+.cta-card-icon { font-size: 2rem; margin-bottom: 14px; }
+.cta-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #E8F5F3;
+  margin-bottom: 8px;
+}
+.cta-card-desc { font-size: 0.78rem; color: #607D8B; line-height: 1.5; }
+
+/* ── FOOTER ── */
+footer {
+  background: #040E0E;
+  padding: 48px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #1E3D3D;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #E8F5F3;
+}
+
+.footer-logo span { color: var(--teal-light); }
+
+.footer-tagline {
+  font-size: 0.72rem;
+  color: #607D8B;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.footer-links a {
+  color: #607D8B;
+  text-decoration: none;
+  font-size: 0.78rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--teal-light); }
+
+.footer-right {
+  font-size: 0.72rem;
+  color: #3D5A58;
+  text-align: right;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .split-layout, .two-col, .pillars-grid, .roadmap-timeline, .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .roadmap-timeline::before { display: none; }
+  .counter-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  footer { flex-direction: column; gap: 24px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 40 40" fill="none">
+      <path d="M20 4 A16 16 0 1 1 36 28" stroke="#00897B" stroke-width="3.5" stroke-linecap="round"/>
+      <polygon points="32,21 38,31 43,24" fill="#00897B" transform="translate(-6,2)"/>
+      <path d="M20 10 A10 10 0 1 0 10 22" stroke="#26C6DA" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 2"/>
+    </svg>
+    <span class="nav-logo-text">Loop<span>Cycle</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#pillars">Our Solution</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#partner" class="nav-cta">Partner With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Environmental Stewardship Initiative · COM 362</div>
+  <h1 class="hero-title">
+    <em>Closing</em> the Loop<br>
+    <strong>on Plastic Waste.</strong>
+  </h1>
+  <p class="hero-sub">Loop Cycle empowers communities to understand, reduce, and locally process their plastic — building the knowledge and systems to keep it out of landfills for good.</p>
+  <div class="hero-actions">
+    <a href="#pillars" class="btn-primary">See Our Solution</a>
+    <a href="#roadmap" class="btn-secondary">View Roadmap</a>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="#071414"/>
+  </svg>
+</section>
+
+<!-- COUNTER STRIP -->
+<div class="counter-strip">
+  <div class="counter-grid">
+    <div class="counter-item reveal">
+      <div class="counter-num">9%</div>
+      <div class="counter-label">of Canadian plastic<br>actually recycled</div>
+    </div>
+    <div class="counter-item reveal">
+      <div class="counter-num">86%</div>
+      <div class="counter-label">of remaining plastic<br>sent to landfill</div>
+    </div>
+    <div class="counter-item reveal">
+      <div class="counter-num">220K</div>
+      <div class="counter-label">single-use items discarded<br>daily in Victoria alone</div>
+    </div>
+    <div class="counter-item reveal">
+      <div class="counter-num">400M</div>
+      <div class="counter-label">tonnes of plastic waste<br>generated globally per year</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="section-inner">
+    <div class="split-layout">
+      <div class="reveal">
+        <div class="section-eyebrow">The Problem</div>
+        <h2 class="section-title">We collect it.<br><em>But we can't</em><br><strong>process it.</strong></h2>
+        <div class="section-body">
+          <p>Canadians do the right thing — they sort their recycling, put out the bin, and trust the system. But that system is fundamentally broken at the local level.</p>
+          <p>Most communities have collection infrastructure. Almost none have the knowledge, capacity, or local processing systems to actually close the loop. Plastic gets shipped elsewhere — often overseas — and much of it still ends up in landfill anyway.</p>
+          <p>BC's Recycle BC program, one of North America's first EPR systems, still only recovers 45% of plastic packaging. Victoria's 2025 pilot program ended due to lack of sustained funding — a perfect example of "Pilot Fatigue." Great initiatives start. They don't become permanent.</p>
+          <p><strong style="color:#E8F5F3">That gap is where Loop Cycle operates.</strong></p>
+        </div>
+      </div>
+      <div class="stat-cards reveal">
+        <div class="stat-card">
+          <div class="stat-card-num">47%</div>
+          <div class="stat-card-text">
+            <strong>Hartland Landfill, Capital Regional District</strong>
+            of material sent to landfill could have been diverted through existing recycling programs
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">64%</div>
+          <div class="stat-card-text">
+            <strong>Barrier to Recycling</strong>
+            of residents report significant barriers — lack of knowledge and transport — for materials like foam and soft plastics
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">12%</div>
+          <div class="stat-card-text">
+            <strong>Exported, Not Recycled</strong>
+            of collected plastic is shipped overseas — often to Malaysia — where it damages local environments
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-num">2,000</div>
+          <div class="stat-card-text">
+            <strong>Garbage Trucks Per Day</strong>
+            worth of plastic is dumped into the world's oceans, rivers, and lakes every single day
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="mission">
+  <div class="section-inner">
+    <div class="mission-centre reveal">
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-title" style="text-align:center">Built on <em>purpose.</em><br><strong>Driven by data.</strong></h2>
+      <blockquote class="mission-quote">
+        "A Canada where every community has the tools and knowledge to close the loop on plastic — where recycled materials stay local, fuel local economies, and support a regenerative relationship between communities and their environment."
+      </blockquote>
+    </div>
+    <div class="two-col">
+      <div class="mission-card reveal">
+        <div class="mission-card-label">Our Mission</div>
+        <div class="mission-card-title">Empowering Communities</div>
+        <div class="mission-card-body">Loop Cycle empowers cities, towns, and small communities to understand, reduce, and locally process their plastic waste — building the knowledge, systems, and partnerships needed to keep plastic out of landfills and ecosystems for good.</div>
+      </div>
+      <div class="mission-card reveal">
+        <div class="mission-card-label">Our Approach</div>
+        <div class="mission-card-title">Data-Driven. Community-Led.</div>
+        <div class="mission-card-body">We combine professional waste auditing methodology, municipal training programs, and the power of public art to make plastic pollution visible, measurable, and solvable — at the community level, where change is actually possible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars" id="pillars">
+  <div class="section-inner">
+    <div class="pillars-header reveal">
+      <div class="section-eyebrow">Our Solution</div>
+      <h2 class="section-title">Three Pillars of <em>Change</em></h2>
+    </div>
+    <div class="pillars-grid">
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">01</div>
+        <div class="pillar-icon">📊</div>
+        <div class="pillar-subtitle">Pillar One</div>
+        <div class="pillar-title">Plastic Waste Audits</div>
+        <div class="pillar-body">A data-driven assessment of a community's entire plastic waste stream — identifying what's being generated, where it's being lost, and what it's costing them.</div>
+        <ul class="pillar-bullets">
+          <li>Systematic waste stream sorting and analysis using the SWAM standard</li>
+          <li>Contamination identification and cost quantification</li>
+          <li>Targeted action plan with measurable implementation milestones</li>
+          <li>Annual follow-up audits to benchmark progress over time</li>
+        </ul>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">02</div>
+        <div class="pillar-icon">🏛️</div>
+        <div class="pillar-subtitle">Pillar Two</div>
+        <div class="pillar-title">Municipal Workshops</div>
+        <div class="pillar-body">Hands-on training programs for municipal staff, teaching them to evaluate their own recycling systems, reduce contamination, and access provincial stewardship funding.</div>
+        <ul class="pillar-bullets">
+          <li>Train staff to conduct ongoing plastic recycling audits independently</li>
+          <li>Guide municipalities through RecycleBC steward registration</li>
+          <li>Evidence-based policy framework for circular material loops</li>
+          <li>School-based curriculum partnership for grades 5–9</li>
+        </ul>
+      </div>
+
+      <div class="pillar-card reveal">
+        <div class="pillar-num">03</div>
+        <div class="pillar-icon">🌊</div>
+        <div class="pillar-subtitle">Pillar Three</div>
+        <div class="pillar-title">Public Art Installations</div>
+        <div class="pillar-body">Transforming recovered ocean plastic into powerful public art — making pollution visible, generating public dialogue, and creating a revenue stream for local artists.</div>
+        <ul class="pillar-bullets">
+          <li>Partner with Ocean Legacy Foundation & Surfrider to collect marine plastics</li>
+          <li>Commission local artists to create large-scale public installations</li>
+          <li>Display at malls, civic spaces, and community venues nationally</li>
+          <li>Public auctions split 50/50 between artists and Loop Cycle operations</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap" id="roadmap">
+  <div class="section-inner">
+    <div class="roadmap-header reveal">
+      <div class="section-eyebrow">Implementation Roadmap</div>
+      <h2 class="section-title">From <em>5 communities</em><br><strong>to 25. In three years.</strong></h2>
+    </div>
+    <div class="roadmap-timeline">
+
+      <div class="roadmap-col reveal">
+        <div class="roadmap-node rn-1">
+          <span class="roadmap-node-sub">Year</span>
+          <span class="roadmap-node-num">01</span>
+        </div>
+        <div class="roadmap-card rc-1">
+          <div class="roadmap-theme">Foundation & Pilot</div>
+          <div class="roadmap-milestones">
+            <div class="rm">Plastic waste audits in <strong>5 pilot communities</strong> across BC</div>
+            <div class="rm"><strong>6–8 municipal workshops</strong> on recycling evaluation & RecycleBC</div>
+            <div class="rm">Launch <strong>1st public art installation</strong> with Ocean Legacy</div>
+            <div class="rm">Secure first <strong>government grant</strong> & corporate sponsorship</div>
+            <div class="rm">Revenue target: <strong>$163,000</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-col reveal">
+        <div class="roadmap-node rn-2">
+          <span class="roadmap-node-sub">Year</span>
+          <span class="roadmap-node-num">02</span>
+        </div>
+        <div class="roadmap-card rc-2">
+          <div class="roadmap-theme">Growth & Expansion</div>
+          <div class="roadmap-milestones">
+            <div class="rm">Expand to <strong>15 communities</strong> across BC and Atlantic Canada</div>
+            <div class="rm">Launch <strong>Certified Local Plastic Advisor</strong> training program</div>
+            <div class="rm">Partner with <strong>2 school boards</strong>, grades 5–9 curriculum</div>
+            <div class="rm"><strong>3 annual art installation</strong> events at national venues</div>
+            <div class="rm">Revenue target: <strong>$293,000</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-col reveal">
+        <div class="roadmap-node rn-3">
+          <span class="roadmap-node-sub">Year</span>
+          <span class="roadmap-node-num">03</span>
+        </div>
+        <div class="roadmap-card rc-3">
+          <div class="roadmap-theme">Systemic Impact</div>
+          <div class="roadmap-milestones">
+            <div class="rm">Operating in <strong>25+ communities</strong> with measurable diversion data</div>
+            <div class="rm">Publish <strong>Canada's first Municipal Plastic Audit Guide</strong></div>
+            <div class="rm"><strong>Provincial & federal advocacy</strong> for mandatory plastic audits</div>
+            <div class="rm">Launch <strong>Loop Cycle Innovation Fund</strong> — $142K cumulative surplus</div>
+            <div class="rm">Revenue target: <strong>$430,000</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SDG -->
+<section class="sdg-section" id="sdg">
+  <div class="section-inner">
+    <div class="sdg-header reveal">
+      <div class="section-eyebrow">Global Alignment</div>
+      <h2 class="section-title" style="text-align:center">Advancing <em>9 UN Sustainable</em><br><strong>Development Goals</strong></h2>
+    </div>
+    <div class="sdg-grid reveal">
+      <div class="sdg-badge sdg-4"><span class="sdg-num">4</span> Quality Education</div>
+      <div class="sdg-badge sdg-6"><span class="sdg-num">6</span> Clean Water</div>
+      <div class="sdg-badge sdg-9"><span class="sdg-num">9</span> Industry & Innovation</div>
+      <div class="sdg-badge sdg-11"><span class="sdg-num">11</span> Sustainable Cities</div>
+      <div class="sdg-badge sdg-12"><span class="sdg-num">12</span> Responsible Consumption</div>
+      <div class="sdg-badge sdg-13"><span class="sdg-num">13</span> Climate Action</div>
+      <div class="sdg-badge sdg-14"><span class="sdg-num">14</span> Life Below Water</div>
+      <div class="sdg-badge sdg-15"><span class="sdg-num">15</span> Life on Land</div>
+      <div class="sdg-badge sdg-17"><span class="sdg-num">17</span> Partnerships for the Goals</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team" id="team">
+  <div class="section-inner">
+    <div class="team-header reveal">
+      <div class="section-eyebrow">Board of Directors</div>
+      <h2 class="section-title" style="text-align:center">The Team <em>Behind</em><br><strong>Loop Cycle</strong></h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">M</div>
+        <div class="team-name">Mateo</div>
+        <div class="team-role">Director of Finance & Strategy</div>
+        <div class="team-desc">Budget management, 3-year projections, grant strategy, and revenue model</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">M</div>
+        <div class="team-name">Melissa</div>
+        <div class="team-role">Director of Research & Impact</div>
+        <div class="team-desc">Secondary research, gap identification, SDG alignment, and data analysis</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">D</div>
+        <div class="team-name">Dawn</div>
+        <div class="team-role">Executive Director / Chair</div>
+        <div class="team-desc">Vision, communications strategy, video production lead, and SDG presentation</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">C</div>
+        <div class="team-name">Caleb</div>
+        <div class="team-role">Director of Programs</div>
+        <div class="team-desc">Audit and workshop design, implementation planning, municipal engagement</div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">R</div>
+        <div class="team-name">Richie</div>
+        <div class="team-role">Director of Community & Partnerships</div>
+        <div class="team-desc">Art installations, NGO partnerships with Ocean Legacy and Surfrider</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="partner">
+  <h2 class="cta-title reveal">Ready to <em>close the loop</em><br>in your community?</h2>
+  <p class="cta-sub reveal">Partner with us. Sponsor an installation. Support the movement.</p>
+  <div class="cta-cards">
+    <div class="cta-card reveal">
+      <div class="cta-card-icon">🏛️</div>
+      <div class="cta-card-title">Municipal Partners</div>
+      <div class="cta-card-desc">Commission a plastic waste audit and join our network of communities taking real action</div>
+    </div>
+    <div class="cta-card reveal">
+      <div class="cta-card-icon">💼</div>
+      <div class="cta-card-title">Corporate Sponsors</div>
+      <div class="cta-card-desc">Sponsor a public art installation and make your commitment to sustainability visible</div>
+    </div>
+    <div class="cta-card reveal">
+      <div class="cta-card-icon">🙋</div>
+      <div class="cta-card-title">Individuals & Donors</div>
+      <div class="cta-card-desc">Support the movement. Every dollar goes directly into community plastic infrastructure</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Loop<span>Cycle</span></div>
+    <div class="footer-tagline">Closing the Loop on Plastic Waste</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#pillars">Solution</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#partner">Partner</a></li>
+  </ul>
+  <div class="footer-right">
+    <div style="color:#3D5A58">loopcycle.ca</div>
+    <div style="color:#2A3D3D; margin-top:4px">COM 362 · Environmental Stewardship Initiative</div>
+  </div>
+</footer>
+
+<script>
+// Particles
+const container = document.getElementById('particles');
+for (let i = 0; i < 22; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 6 + 2;
+  const colors = ['#00897B', '#26C6DA', '#26A69A', '#4DB6AC', '#80CBC4'];
+  p.style.cssText = `
+    width: ${size}px;
+    height: ${size}px;
+    left: ${Math.random() * 100}%;
+    background: ${colors[Math.floor(Math.random() * colors.length)]};
+    animation-duration: ${Math.random() * 18 + 12}s;
+    animation-delay: ${Math.random() * 10}s;
+  `;
+  container.appendChild(p);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
